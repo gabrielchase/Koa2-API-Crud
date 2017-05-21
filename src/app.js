@@ -1,16 +1,18 @@
 'use strict'
 
 import Koa from 'koa'
-import api from './api'
-// import config from './config'
-import bodyParser from 'koa-bodyparser'
-import cors from 'kcors'
+import Router from 'koa-router'
+import bodyparser from 'koa-bodyparser'
+
+import todos from './routes/todos'
 
 const app = new Koa()
+const router = new Router()
 
-app.use(async (ctx) => {
-    ctx.body = 'Hello Koa2!'
-})
+app.use(bodyparser())
+
+router.use('/todos', todos.routes(), todos.allowedMethods())
+app.use(router.routes())
 
 // visible and usable to ../index.js
 export default app
