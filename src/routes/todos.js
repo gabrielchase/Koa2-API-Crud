@@ -12,7 +12,7 @@ router.get('/', async ctx => {
 
 router.post('/', async (ctx) => {
     const { title } = ctx.request.body
-    todos.push({ title, completed: false})
+    todos.push({ title, completed: false })
     ctx.status = 201
 })
 
