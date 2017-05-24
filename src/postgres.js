@@ -7,7 +7,6 @@ export async function createTables(pgInstance, schemas) {
     await pgInstance.transaction(async (instance) => {
         try {
             await instance.query(schemas.create[0])
-            console.log('Table successfully created')
         } catch (error) {
             console.log('Error creating tables: ', err)
         }
