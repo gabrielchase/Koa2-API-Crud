@@ -8,14 +8,15 @@ const router = new Router()
 const todoRoute = new Router()
 
 todoRoute.get('/', async (ctx, next) => {
-    let result = await todoCrudOps.read()
+    let { rows } = await todoCrudOps.read()
     ctx.status = 200
-    ctx.body = result.rows
+    ctx.body = rows
 })
 
 todoRoute.get('/:id', async (ctx, next) => {
-    await todoCrudOps.readOne(ctx.params.id)
+    let { rows } = await todoCrudOps.readOne(ctx.params.id)
     ctx.status = 200
+    ctx.body = rows
 })
 
 todoRoute.post('/', async (ctx, next) => {
