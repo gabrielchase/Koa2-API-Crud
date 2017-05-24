@@ -13,6 +13,11 @@ todoRoute.get('/', async (ctx, next) => {
     ctx.body = result.rows
 })
 
+todoRoute.get('/:id', async (ctx, next) => {
+    await todoCrudOps.readOne(ctx.params.id)
+    ctx.status = 200
+})
+
 todoRoute.post('/', async (ctx, next) => {
     await todoCrudOps.create(ctx.request.body)
     ctx.status = 201

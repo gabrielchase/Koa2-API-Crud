@@ -21,6 +21,9 @@ const todoCrudOps = {
     read: async() => {
         return  pgAsync.query(`SELECT * FROM ${todosConfig.tableName}`)
     },
+    readOne: async(id) => {
+        return  pgAsync.query(`SELECT * FROM ${todosConfig.tableName} WHERE id = $1`, id)
+    },
     create: async({ title, completed }) => {
         let todo = {
             title,
