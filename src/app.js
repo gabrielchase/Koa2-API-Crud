@@ -9,8 +9,6 @@ import { postgresMiddleware } from './postgres'
 import { schema as todosSchema } from './models/todos'
 import { config } from './config/config'
 
-// import err from './middleware/error'
-
 const app = new Koa()
 
 app.use(logger())

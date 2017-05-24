@@ -1,3 +1,5 @@
+'use strict'
+
 import PgAsync from 'pg-async'
 export { SQL } from 'pg-async'
 

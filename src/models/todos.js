@@ -1,3 +1,5 @@
+'use strict'
+
 import PgAsync, { SQL } from 'pg-async'
 import { config } from  '../config/config'
 
