@@ -21,7 +21,7 @@ const todoCrudOps = {
     read: async() => {
         return  pgAsync.query(`SELECT * FROM ${todosConfig.tableName}`)
     },
-    create: async({ title, completed}) => {
+    create: async({ title, completed }) => {
         let todo = {
             title,
             completed
@@ -34,7 +34,7 @@ const todoCrudOps = {
     update: async(id, { title, completed }) => {
         let query = `UPDATE ${todosConfig.tableName} SET `
         
-        if (title != undefined) query += `title = ${title} `
+        if (title != undefined) query += `title = '${title}' `
         if (title != undefined && query != undefined) query += ', '
         if (completed != undefined) query += `completed = ${completed} `
         if (id > 0) query += `WHERE id = ${id}`
