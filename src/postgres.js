@@ -18,8 +18,7 @@ export function postgresMiddleware(uri, schemas) {
     const setup = once(createTables)
 
     return async (ctx, next) => {
-        const pg = await createTables(pgInstance, schemas)
-        ctx.postgres = pg
+        await createTables(pgInstance, schemas)
         return await next()
     }
 }
