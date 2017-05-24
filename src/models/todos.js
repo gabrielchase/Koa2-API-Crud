@@ -40,6 +40,9 @@ const todoCrudOps = {
         if (id > 0) query += `WHERE id = ${id}`
         
         return pgAsync.query(query)
+    },
+    delete: async(id) => {
+        pgAsync.query(`DELETE FROM ${todosConfig.tableName} WHERE id = $1`, id)
     }
 }
 

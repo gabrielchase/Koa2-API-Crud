@@ -7,8 +7,6 @@ import todoCrudOps from '../models/todos'
 const router = new Router()
 const todoRoute = new Router()
 
-const todos = []
-
 todoRoute.get('/', async (ctx, next) => {
     let result = await todoCrudOps.read()
     ctx.status = 200
@@ -22,6 +20,11 @@ todoRoute.post('/', async (ctx, next) => {
 
 todoRoute.put('/:id', async(ctx, next) => {
     await todoCrudOps.update(ctx.params.id, ctx.request.body)
+    ctx.status = 204
+})
+
+todoRoute.delete('/:id', async(ctx, next) => {
+    await todoCrudOps.delete(ctx.params.id)
     ctx.status = 204
 })
 
