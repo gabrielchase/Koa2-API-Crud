@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 describe('Todos', () => {
     it('should list ALL todos on /todos GET', (done) => {
         chai.request(server)
-            .get('/todo')
+            .get('/todos')
             .end((err, res) => {
                 for (let todo of res.body) {
                     todo.should.have.property('id')
@@ -21,7 +21,7 @@ describe('Todos', () => {
     })
     it('should list ONE todos on /todos GET', (done) => {
         chai.request(server)
-            .get('/todo/1')
+            .get('/todos/1')
             .end((err, res) => {
                 res.body.should.have.length(1)
                 res.body[0].should.have.property('id')
@@ -31,7 +31,7 @@ describe('Todos', () => {
     })
     it('should ADD SINGLE todos on /todos POST', (done) => {
         chai.request(server)
-            .post('/todo')
+            .post('/todos')
             .send({ title: 'Title test', completed: false })
             .end((err, res) => {
                 res.should.have.status(201)
@@ -40,7 +40,7 @@ describe('Todos', () => {
     })
     it('should EDIT SINGLE todos on /todos PUT', (done) => {
         chai.request(server)
-            .put('/todo/1')
+            .put('/todos/1')
             .send({ title: 'Edit title', completed: true })
             .end((err, res) => {
                 res.should.have.status(204)

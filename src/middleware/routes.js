@@ -34,7 +34,11 @@ todoRoute.delete('/:id', async(ctx, next) => {
     ctx.status = 204
 })
 
-router.use('/todo', todoRoute.routes(), todoRoute.allowedMethods())
+router.get('/', async(ctx, next) => {
+    ctx.body = 'Hello World!'
+})
+
+router.use('/todos', todoRoute.routes(), todoRoute.allowedMethods())
 
 export function routes() { return router.routes() }
 export function allowedMethods() { return router.allowedMethods() }
