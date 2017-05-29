@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fs": "^0.0.1-security",
     "kcors": "^2.2.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^3.2.0",

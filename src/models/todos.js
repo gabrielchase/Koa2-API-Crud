@@ -40,7 +40,7 @@ const todoCrudOps = {
         let query = `UPDATE ${todosConfig.tableName} SET `
         
         if (title != undefined) query += `title = '${title}' `
-        if (title != undefined && query != undefined) query += ', '
+        if (title != undefined && completed != undefined) query += ', '
         if (completed != undefined) query += `completed = ${completed} `
         if (id > 0) query += `WHERE id = ${id}`
         

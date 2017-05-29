@@ -5,40 +5,48 @@ import Router from 'koa-router'
 import todoCrudOps from '../models/todos'
 
 const router = new Router()
-const todoRoute = new Router()
 
-todoRoute.get('/', async (ctx, next) => {
+router.get('/', checkSecure(), async (ctx, next) => {
     let { rows } = await todoCrudOps.read()
     ctx.status = 200
     ctx.body = rows
 })
 
-todoRoute.get('/:id', async (ctx, next) => {
+router.get('/:id', checkSecure(), async (ctx, next) => {
     let { rows } = await todoCrudOps.readOne(ctx.params.id)
     ctx.status = 200
     ctx.body = rows
 })
 
-todoRoute.post('/', async (ctx, next) => {
+router.post('', checkSecure(), async (ctx, next) => {
     await todoCrudOps.create(ctx.request.body)
     ctx.status = 201
 })
 
-todoRoute.put('/:id', async(ctx, next) => {
+router.put('/:id', checkSecure(), async(ctx, next) => {
     await todoCrudOps.update(ctx.params.id, ctx.request.body)
     ctx.status = 204
 })
 
-todoRoute.delete('/:id', async(ctx, next) => {
+router.delete('/:id', checkSecure(), async(ctx, next) => {
     await todoCrudOps.delete(ctx.params.id)
     ctx.status = 204
 })
 
-router.get('/', async(ctx, next) => {
-    ctx.body = 'Hello World!'
-})
-
-router.use('/todos', todoRoute.routes(), todoRoute.allowedMethods())
+router.use('/todos', router.routes(), router.allowedMethods())
 
 export function routes() { return router.routes() }
+
 export function allowedMethods() { return router.allowedMethods() }
+
+function checkSecure() {
+    return async(ctx, next) => {
+        if (ctx.secure != true) {
+            console.log('not secure')
+            ctx.body = 'not secure'
+            ctx.redirect('https://locahost:3000/todos')
+        }
+        console.log('secure: ',  ctx.secure)
+        await next()
+    }
+}
