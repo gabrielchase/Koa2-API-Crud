@@ -47,11 +47,10 @@ var router = new _koaRouter2.default();
 app.use((0, _koaLogger2.default)());
 app.use((0, _koaBodyparser2.default)());
 app.use((0, _postgres.postgresMiddleware)(_config.config.dbUri, _todos.schema));
-// app.use(checkSecure())
 app.use((0, _routes.routes)());
 
-console.log(certs.key);
-console.log(certs.cert);
+// console.log(certs.key)
+// console.log(certs.cert)
 
 _spdy2.default.createServer(certs, app.callback()).listen(_config.config.server.port, function () {
     return console.log("Server listening on port: " + _config.config.server.port);
