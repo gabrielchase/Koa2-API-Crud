@@ -6,34 +6,49 @@ import todoCrudOps from '../models/todos'
 
 const router = new Router()
 
-router.get('/', checkSecure(), async (ctx, next) => {
+router.get('/todos', checkSecure(), async (ctx, next) => {
     let { rows } = await todoCrudOps.read()
     ctx.status = 200
     ctx.body = rows
 })
 
-router.get('/:id', checkSecure(), async (ctx, next) => {
+router.get('/todos/:id', checkSecure(), async (ctx, next) => {
     let { rows } = await todoCrudOps.readOne(ctx.params.id)
     ctx.status = 200
     ctx.body = rows
 })
 
-router.post('', checkSecure(), async (ctx, next) => {
+router.post('/todos', checkSecure(), async (ctx, next) => {
     await todoCrudOps.create(ctx.request.body)
     ctx.status = 201
 })
 
-router.put('/:id', checkSecure(), async(ctx, next) => {
+router.put('/todos/:id', checkSecure(), async(ctx, next) => {
     await todoCrudOps.update(ctx.params.id, ctx.request.body)
     ctx.status = 204
 })
 
-router.delete('/:id', checkSecure(), async(ctx, next) => {
+router.delete('/todos/:id', checkSecure(), async(ctx, next) => {
     await todoCrudOps.delete(ctx.params.id)
     ctx.status = 204
 })
 
-router.use('/todos', router.routes(), router.allowedMethods())
+router.get('/server-push', checkSecure(), async(ctx, next) => {
+    ctx.status = 200
+    ctx.res.push('/server-push-file.js', {
+        request: {
+            accept: '*/\*'
+        },
+        response: {
+            'content-type': 'application/json',
+        }
+    }).end('alert("Hello from server push before render")')
+    
+    ctx.res.end(`
+        <p> Render after alert </p>
+        <script src="/server-push-file.js"></script>
+    `)
+})
 
 export function routes() { return router.routes() }
 
