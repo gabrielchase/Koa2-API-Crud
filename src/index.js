@@ -27,10 +27,6 @@ app.use(bodyparser())
 app.use(postgresMiddleware(config.dbUri, todosSchema))
 app.use(routes())
 
-// console.log(certs.key)
-// console.log(certs.cert)
-
 http2.createServer(certs, app.callback()).listen(config.server.port, () => 
     console.log(`Server listening on port: ${config.server.port}`))
-
-// app.listen(config.server.port, () => console.log(`Server listening on port: ${config.server.port}`))
+    

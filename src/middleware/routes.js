@@ -57,11 +57,10 @@ export function allowedMethods() { return router.allowedMethods() }
 function checkSecure() {
     return async(ctx, next) => {
         if (ctx.secure != true) {
-            console.log('not secure')
-            ctx.body = 'not secure'
+            console.log('Secure: ', ctx.secure)
             ctx.redirect('https://locahost:3000/todos')
         }
-        console.log('secure: ',  ctx.secure)
+        console.log('Secure: ',  ctx.secure)
         await next()
     }
 }
