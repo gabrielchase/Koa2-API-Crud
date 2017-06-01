@@ -9,11 +9,15 @@ var _pgAsync = require('pg-async');
 
 var _pgAsync2 = _interopRequireDefault(_pgAsync);
 
-var _config = require('../config/config');
+var _utils = require('../utils/utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var pgAsync = new _pgAsync2.default(_config.config.dbUri);
+var _setDb = (0, _utils.setDb)(process.env.NODE_ENV);
+
+var dbUri = _setDb.dbUri;
+
+var pgAsync = new _pgAsync2.default(dbUri);
 
 var todosConfig = {
     tableName: 'todos'
@@ -39,7 +43,7 @@ var todoCrudOps = {
             completed: completed
         };
 
-        return await pgAsync.query('\n            INSERT INTO ' + todosConfig.tableName + ' \n            (title, completed) VALUES ($1, $2)', title, completed);
+        return await pgAsync.row('\n            INSERT INTO ' + todosConfig.tableName + ' \n            (title, completed) VALUES ($1, $2)\n            RETURNING *', title, completed);
     },
     update: async function update(id, _ref2) {
         var title = _ref2.title;
@@ -52,7 +56,9 @@ var todoCrudOps = {
         if (completed != undefined) query += 'completed = ' + completed + ' ';
         if (id > 0) query += 'WHERE id = ' + id;
 
-        return pgAsync.query(query);
+        query += ' RETURNING *';
+
+        return pgAsync.row(query);
     },
     delete: async function _delete(id) {
         pgAsync.query('DELETE FROM ' + todosConfig.tableName + ' WHERE id = $1', id);

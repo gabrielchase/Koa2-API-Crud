@@ -40,6 +40,7 @@ function postgresMiddleware(uri, schemas) {
 
     return async function (ctx, next) {
         await createTables(pgInstance, schemas);
+
         return await next();
     };
 }

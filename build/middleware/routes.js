@@ -37,13 +37,15 @@ router.get('/todos/:id', checkSecure(), async function (ctx, next) {
 });
 
 router.post('/todos', checkSecure(), async function (ctx, next) {
-    await _todos2.default.create(ctx.request.body);
+    var body = await _todos2.default.create(ctx.request.body);
     ctx.status = 201;
+    ctx.body = body;
 });
 
 router.put('/todos/:id', checkSecure(), async function (ctx, next) {
-    await _todos2.default.update(ctx.params.id, ctx.request.body);
-    ctx.status = 204;
+    var body = await _todos2.default.update(ctx.params.id, ctx.request.body);
+    ctx.status = 202;
+    ctx.body = body;
 });
 
 router.delete('/todos/:id', checkSecure(), async function (ctx, next) {
@@ -76,11 +78,10 @@ function allowedMethods() {
 function checkSecure() {
     return async function (ctx, next) {
         if (ctx.secure != true) {
-            console.log('not secure');
-            ctx.body = 'not secure';
+            console.log('Secure: ', ctx.secure);
             ctx.redirect('https://locahost:3000/todos');
         }
-        console.log('secure: ', ctx.secure);
+        console.log('Secure: ', ctx.secure);
         await next();
     };
 }

@@ -4,8 +4,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var config = exports.config = {
-    dbUri: process.env.DATABASE_URL || 'postgres://localhost:5432/koacrud?user=gchasepatron&password=postgrespassword',
-    server: {
-        port: 3000
+    dev: {
+        dbUri: process.env.DATABASE_URL || 'postgres://localhost:5432/koacrud?user=postgres&password=postgres'
+    },
+    test: {
+        dbUri: process.env.DATABASE_URL || 'postgres://localhost:5432/koacrud_test?user=postgres&password=postgres'
     }
 };

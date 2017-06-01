@@ -30,11 +30,20 @@ var _postgres = require("./postgres");
 
 var _todos = require("./models/todos");
 
-var _config = require("./config/config");
+var _utils = require("./utils/utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 require("babel-core").transform("code");
+
+var port = process.env.PORT || 3000;
+
+var _setDb = (0, _utils.setDb)(process.env.NODE_ENV);
+
+var dbUri = _setDb.dbUri;
+
+
+console.log('dbUri: ', dbUri);
 
 var certs = {
     key: _fs2.default.readFileSync('./src/keys/server.key'),
@@ -46,14 +55,12 @@ var router = new _koaRouter2.default();
 
 app.use((0, _koaLogger2.default)());
 app.use((0, _koaBodyparser2.default)());
-app.use((0, _postgres.postgresMiddleware)(_config.config.dbUri, _todos.schema));
+app.use((0, _postgres.postgresMiddleware)(dbUri, _todos.schema));
 app.use((0, _routes.routes)());
 
-// console.log(certs.key)
-// console.log(certs.cert)
+// http2.createServer(certs, app.callback()).listen(config.server.port, () => 
+//     console.log(`Server listening on port: ${config.server.port}`))
 
-_spdy2.default.createServer(certs, app.callback()).listen(_config.config.server.port, function () {
-    return console.log("Server listening on port: " + _config.config.server.port);
+app.listen(port, function () {
+    return console.log("Server listening on port: " + port);
 });
-
-// app.listen(config.server.port, () => console.log(`Server listening on port: ${config.server.port}`))
