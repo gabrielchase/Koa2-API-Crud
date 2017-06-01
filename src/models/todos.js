@@ -33,9 +33,10 @@ const todoCrudOps = {
             completed
         }
 
-        return await pgAsync.query(`
+        return await pgAsync.row(`
             INSERT INTO ${todosConfig.tableName} 
-            (title, completed) VALUES ($1, $2)`, title, completed)
+            (title, completed) VALUES ($1, $2)
+            RETURNING *`, title, completed)
     },
     update: async(id, { title, completed }) => {
         let query = `UPDATE ${todosConfig.tableName} SET `
@@ -44,8 +45,10 @@ const todoCrudOps = {
         if (title != undefined && completed != undefined) query += ', '
         if (completed != undefined) query += `completed = ${completed} `
         if (id > 0) query += `WHERE id = ${id}`
+
+        query += ' RETURNING *'
         
-        return pgAsync.query(query)
+        return pgAsync.row(query)
     },
     delete: async(id) => {
         pgAsync.query(`DELETE FROM ${todosConfig.tableName} WHERE id = $1`, id)

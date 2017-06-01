@@ -15,9 +15,9 @@ import { schema as todosSchema } from './models/todos'
 import { setDb } from './utils/utils'
 
 const port = process.env.PORT || 3000
-const db = setDb(process.env.NODE_ENV)
+const { dbUri } = setDb(process.env.NODE_ENV)
 
-console.log('dbUri: ', db.dbUri)
+console.log('dbUri: ', dbUri)
 
 const certs = {
     key: fs.readFileSync('./src/keys/server.key'),
@@ -29,7 +29,7 @@ const router = new Router()
 
 app.use(logger())
 app.use(bodyparser())
-app.use(postgresMiddleware(db.dbUri, todosSchema))
+app.use(postgresMiddleware(dbUri, todosSchema))
 app.use(routes())
 
 // http2.createServer(certs, app.callback()).listen(config.server.port, () => 

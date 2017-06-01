@@ -19,13 +19,15 @@ router.get('/todos/:id', checkSecure(), async (ctx, next) => {
 })
 
 router.post('/todos', checkSecure(), async (ctx, next) => {
-    await todoCrudOps.create(ctx.request.body)
+    const body = await todoCrudOps.create(ctx.request.body)
     ctx.status = 201
+    ctx.body = body
 })
 
 router.put('/todos/:id', checkSecure(), async(ctx, next) => {
-    await todoCrudOps.update(ctx.params.id, ctx.request.body)
-    ctx.status = 204
+    const body = await todoCrudOps.update(ctx.params.id, ctx.request.body)
+    ctx.status = 202
+    ctx.body = body
 })
 
 router.delete('/todos/:id', checkSecure(), async(ctx, next) => {
