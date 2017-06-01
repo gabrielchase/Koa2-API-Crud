@@ -1,9 +1,10 @@
 'use strict'
 
 import PgAsync, { SQL } from 'pg-async'
-import { config } from  '../config/config'
+import { setDb } from '../utils/utils'
 
-const pgAsync = new PgAsync(config.dbUri);
+const { dbUri } = setDb(process.env.NODE_ENV)
+const pgAsync = new PgAsync(dbUri)
 
 const todosConfig = {
     tableName: 'todos'

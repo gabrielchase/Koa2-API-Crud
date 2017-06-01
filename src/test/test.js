@@ -13,18 +13,9 @@ describe('Todos', () => {
             .get('/todos')
             .end((err, res) => {
                 for (let todo of res.body) {
+                    console.log('todo: ', todo)
                     todo.should.have.property('id')
                 }
-                res.should.have.status(200)
-                done()
-            })
-    })
-    it('should list ONE todos on /todos GET', (done) => {
-        chai.request(server)
-            .get('/todos/1')
-            .end((err, res) => {
-                res.body.should.have.length(1)
-                res.body[0].should.have.property('id')
                 res.should.have.status(200)
                 done()
             })
@@ -35,6 +26,16 @@ describe('Todos', () => {
             .send({ title: 'Title test', completed: false })
             .end((err, res) => {
                 res.should.have.status(201)
+                done()
+            })
+    })
+    it('should list ONE todos on /todos GET', (done) => {
+        chai.request(server)
+            .get('/todos/1')
+            .end((err, res) => {
+                res.body.should.have.length(1)
+                res.body[0].should.have.property('id')
+                res.should.have.status(200)
                 done()
             })
     })

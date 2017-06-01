@@ -12,7 +12,12 @@ import http2 from 'spdy'
 import { routes, checkSecure } from './middleware/routes'
 import { postgresMiddleware } from './postgres'
 import { schema as todosSchema } from './models/todos'
-import { config } from './config/config'
+import { setDb } from './utils/utils'
+
+const port = process.env.PORT || 3000
+const db = setDb(process.env.NODE_ENV)
+
+console.log('dbUri: ', db.dbUri)
 
 const certs = {
     key: fs.readFileSync('./src/keys/server.key'),
@@ -24,9 +29,12 @@ const router = new Router()
 
 app.use(logger())
 app.use(bodyparser())
-app.use(postgresMiddleware(config.dbUri, todosSchema))
+app.use(postgresMiddleware(db.dbUri, todosSchema))
 app.use(routes())
 
-http2.createServer(certs, app.callback()).listen(config.server.port, () => 
-    console.log(`Server listening on port: ${config.server.port}`))
+// http2.createServer(certs, app.callback()).listen(config.server.port, () => 
+//     console.log(`Server listening on port: ${config.server.port}`))
+
+app.listen(port, () => 
+    console.log(`Server listening on port: ${port}`))
     
